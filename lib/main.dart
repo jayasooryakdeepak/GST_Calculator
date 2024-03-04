@@ -12,7 +12,7 @@ class _GstCalculatorState extends State<GstCalculator> {
   double _sgst = 0.0;
   double _gst = 0.0;
   double _total = 0.0;
-
+  var _controller = TextEditingController();
 
 
   void _calculateGst(double gstRate) {
@@ -47,6 +47,7 @@ class _GstCalculatorState extends State<GstCalculator> {
         child: Column(
           children: [
             TextField(
+              controller: _controller,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 labelText: 'Enter Amount',
@@ -137,7 +138,10 @@ class _GstCalculatorState extends State<GstCalculator> {
                   icon: Icon(Icons.backspace),
                 ),
                 ElevatedButton(
-                  onPressed: _clear,
+                  onPressed: () {
+                    _clear();
+                    _controller.clear();
+                  },
                   child: Text('Clear'),
                 ),
               ],
