@@ -10,11 +10,17 @@ class _GstCalculatorState extends State<GstCalculator> {
   double _gstRate = 0.0;
   double _cgst = 0.0;
   double _sgst = 0.0;
+  double _gst = 0.0;
+  double _total = 0.0;
+
+
 
   void _calculateGst(double gstRate) {
     setState(() {
       _gstRate = gstRate;
       _cgst = _sgst = _amount * (gstRate / 200);
+      _gst = _amount * (gstRate / 100);
+      _total = _gst + _amount;
     });
   }
 
@@ -24,6 +30,8 @@ class _GstCalculatorState extends State<GstCalculator> {
       _gstRate = 0.0;
       _cgst = 0.0;
       _sgst = 0.0;
+      _gst = 0.0;
+      _total = 0.0;
     });
   }
 
@@ -31,6 +39,7 @@ class _GstCalculatorState extends State<GstCalculator> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.yellow[700],
         title: Text('GST Calculator'),
       ),
       body: Padding(
@@ -48,10 +57,16 @@ class _GstCalculatorState extends State<GstCalculator> {
                 });
               },
             ),
+            SizedBox(
+              height: 30,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
+                  // style: ElevatedButton.styleFrom(
+                  //   backgroundColor: Color.fromARGB(255, 9, 47, 104),
+                  // ),
                   onPressed: () => _calculateGst(5),
                   child: Text('5%'),
                 ),
@@ -66,7 +81,7 @@ class _GstCalculatorState extends State<GstCalculator> {
               ],
             ),
             SizedBox(
-              height: 10.0,
+              height: 20.0,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -82,18 +97,30 @@ class _GstCalculatorState extends State<GstCalculator> {
                 Text('₹ ${_cgst.toStringAsFixed(2)}'),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('GST'),
-                Text('₹ ${_amount.toStringAsFixed(2)}'),
-              ],
+            SizedBox(
+              height: 10.0,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Total'),
-                Text('₹ ${(_amount + _cgst + _sgst).toStringAsFixed(2)}'),
+                Text('GST'),
+                Text('₹ ${_gst.toStringAsFixed(2)}'),
+              ],
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Total',
+                  style: TextStyle(fontSize: 30),
+                ),
+                Text(
+                  '₹ ${_total.toStringAsFixed(2)}',
+                  style: TextStyle(fontSize: 30),
+                ),
               ],
             ),
             Row(
@@ -135,8 +162,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'GST Calculator',
       theme: ThemeData(
-        primarySwatch: Colors.yellow,
-      ),
+          scaffoldBackgroundColor: Color.fromARGB(244, 3, 41, 71),
+          primarySwatch: Colors.amber,
+          textTheme: TextTheme(
+            bodyMedium: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ).apply(
+            bodyColor: Color.fromARGB(255, 255, 255, 255),
+            displayColor: Colors.green,
+          )),
       home: GstCalculator(),
     );
   }
