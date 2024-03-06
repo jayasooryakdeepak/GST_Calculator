@@ -15,27 +15,50 @@ class _GstCalculatorState extends State<GstCalculator> {
   double _sgst = 0.0;
   double _gst = 0.0;
   double _total = 0.0;
-  final _controller = TextEditingController();
-
+  double _profit = 0.0;
+  double _profitupd = 0.0;
+  double _gstr = 18.0;
+  final _controlleramt = TextEditingController();
+  final _controllerpro = TextEditingController();
 
   void _calculateGst(double gstRate) {
-    setState(() {
-      _gstRate = gstRate;
-      _cgst = _sgst = _amount * (gstRate / 200);
-      _gst = _amount * (gstRate / 100);
-      _total = _gst + _amount;
-    });
+    setState(
+      () {
+        if (_profit > 0.0) {
+          _amount = _profitupd;
+        }
+        _gstRate = gstRate;
+        _cgst = _sgst = _amount * (gstRate / 200);
+        _gst = _amount * (gstRate / 100);
+        _total = _gst + _amount;
+      },
+    );
   }
 
-void _calculateSubGst(double gstRate) {
-  setState(() {
-    _gstRate = gstRate;
-    _total = _amount / ((100+_gstRate) / 100);
-    _cgst = _sgst = _total * (_gstRate / 200);
-    _gst = _cgst + _sgst;
-    _gstRate = 0.0;
-  });
-}
+  void _calculateSubGst(double gstRate) {
+    setState(
+      () {
+        _gstRate = gstRate;
+        _total = _amount / ((100 + _gstRate) / 100);
+        _cgst = _sgst = _total * (_gstRate / 200);
+        _gst = _cgst + _sgst;
+      },
+    );
+  }
+
+  void _addProfit(double _profit, double gstRate) {
+    setState(
+      () {
+        if (_total == 0.0) {
+          _total = _amount;
+        }
+        _profitupd = _total + _profit;
+        _cgst = _sgst = _profitupd * (gstRate / 200);
+        _gst = _profitupd * (gstRate / 100);
+        _total = _gst + _profitupd;
+      },
+    );
+  }
 
   void _clear() {
     setState(() {
@@ -45,6 +68,8 @@ void _calculateSubGst(double gstRate) {
       _sgst = 0.0;
       _gst = 0.0;
       _total = 0.0;
+      _profit = 0.0;
+      _profitupd = 0.0;
     });
   }
 
@@ -62,19 +87,36 @@ void _calculateSubGst(double gstRate) {
             children: [
               TextField(
                 style: const TextStyle(color: Colors.white),
-                controller: _controller,
+                controller: _controlleramt,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   labelText: 'Enter Amount',
                 ),
                 onChanged: (value) {
-                  setState(() {
-                    _amount = double.tryParse(value) ?? 0.0;
-                  });
+                  setState(
+                    () {
+                      _amount = double.tryParse(value) ?? 0.0;
+                    },
+                  );
                 },
               ),
               const SizedBox(
-                height: 30,
+                height: 10,
+              ),
+              TextField(
+                style: const TextStyle(color: Colors.white),
+                controller: _controllerpro,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: 'Enter Profit',
+                ),
+                onChanged: (value) {
+                  setState(
+                    () {
+                      _profit = double.tryParse(value) ?? 0.0;
+                    },
+                  );
+                },
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -97,7 +139,7 @@ void _calculateSubGst(double gstRate) {
                 ],
               ),
               const SizedBox(
-                height: 15,
+                height: 5,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -120,7 +162,24 @@ void _calculateSubGst(double gstRate) {
                 ],
               ),
               const SizedBox(
-                height: 20.0,
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => _addProfit(_profit, _gstRate),
+                    child: const Text('Add Profit'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      _clear();
+                      _controlleramt.clear();
+                      _controllerpro.clear();
+                    },
+                    child: const Text('Clear'),
+                  ),
+                ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -136,14 +195,28 @@ void _calculateSubGst(double gstRate) {
                   Text('₹ ${_cgst.toStringAsFixed(2)}'),
                 ],
               ),
-              const SizedBox(
-                height: 10.0,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('GST'),
                   Text('₹ ${_gst.toStringAsFixed(2)}'),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Profit'),
+                  Text('₹ ${_profit.toStringAsFixed(2)}'),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Profit added'),
+                  Text('₹ ${_profitupd.toStringAsFixed(2)}'),
                 ],
               ),
               const SizedBox(
@@ -162,29 +235,6 @@ void _calculateSubGst(double gstRate) {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      if (_amount > 0) {
-                        setState(() {
-                          _amount = (_amount / 10).floorToDouble();
-                        });
-                      }
-                    },
-                    icon: const Icon(Icons.backspace),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      _clear();
-                      _controller.clear();
-                    },
-                    child: const Text('Clear'),
-                  ),
-                ],
-              )
             ],
           ),
         ),
