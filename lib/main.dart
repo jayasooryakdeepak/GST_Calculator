@@ -18,6 +18,9 @@ class _GstCalculatorState extends State<GstCalculator> {
   double _profit = 0.0;
   double _profitupd = 0.0;
   double _gstr = 18.0;
+
+  bool _isExpanded = false;
+
   final _controlleramt = TextEditingController();
   final _controllerpro = TextEditingController();
 
@@ -181,25 +184,45 @@ class _GstCalculatorState extends State<GstCalculator> {
                   ),
                 ],
               ),
+              Container(
+                child: Row(
+                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Text('GST'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(200,0,0,0),
+                      child: Text('₹ ${_gst.toStringAsFixed(2)}'),
+                    ),
+                    ExpandIcon(
+                      isExpanded: _isExpanded,
+                      color: Colors.white,
+                      expandedColor: Colors.black,
+                      onPressed: (bool isExpanded) {
+                        setState(() {
+                          _isExpanded = !isExpanded;
+                        });
+                      },
+                    )
+                  ],
+                ),
+              ),
+              if(_isExpanded)
+                Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('SGST'),
+                  Text('₹ ${_sgst.toStringAsFixed(2)}'),
+                ],
+              ),
+              if(_isExpanded)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('CGST'),
-                  Text('₹ ${_sgst.toStringAsFixed(2)}'),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('SGST'),
                   Text('₹ ${_cgst.toStringAsFixed(2)}'),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('GST'),
-                  Text('₹ ${_gst.toStringAsFixed(2)}'),
                 ],
               ),
               const SizedBox(
