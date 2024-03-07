@@ -84,181 +84,194 @@ class _GstCalculatorState extends State<GstCalculator> {
         title: const Text('GST Calculator'),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              TextField(
-                style: const TextStyle(color: Colors.white),
-                controller: _controlleramt,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Enter Amount',
-                ),
-                onChanged: (value) {
-                  setState(
-                    () {
-                      _amount = double.tryParse(value) ?? 0.0;
-                    },
-                  );
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextField(
-                style: const TextStyle(color: Colors.white),
-                controller: _controllerpro,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Enter Profit',
-                ),
-                onChanged: (value) {
-                  setState(
-                    () {
-                      _profit = double.tryParse(value) ?? 0.0;
-                    },
-                  );
-                },
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    // style: ElevatedButton.styleFrom(
-                    //   backgroundColor: Color.fromARGB(255, 9, 47, 104),
-                    // ),
-                    onPressed: () => _calculateGst(5),
-                    child: const Text('5%'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => _calculateGst(18),
-                    child: const Text('18%'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => _calculateGst(28),
-                    child: const Text('28%'),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    // style: ElevatedButton.styleFrom(
-                    //   backgroundColor: Color.fromARGB(255, 9, 47, 104),
-                    // ),
-                    onPressed: () => _calculateSubGst(5),
-                    child: const Text('-5%'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => _calculateSubGst(18),
-                    child: const Text('-18%'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => _calculateSubGst(28),
-                    child: const Text('-28%'),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: () => _addProfit(_profit, _gstRate),
-                    child: const Text('Add Profit'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      _clear();
-                      _controlleramt.clear();
-                      _controllerpro.clear();
-                    },
-                    child: const Text('Clear'),
-                  ),
-                ],
-              ),
-              Container(
-                child: Row(
-                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: const Text('GST'),
+        child: Container(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                TextField(
+                  style: const TextStyle(color: Colors.white),
+                  controller: _controlleramt,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: 'Enter Amount',
+                    labelStyle: TextStyle(
+                      color: Color.fromARGB(255, 255, 197, 49),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(200,0,0,0),
-                      child: Text('₹ ${_gst.toStringAsFixed(2)}'),
-                    ),
-                    ExpandIcon(
-                      isExpanded: _isExpanded,
-                      color: Colors.white,
-                      expandedColor: Colors.black,
-                      onPressed: (bool isExpanded) {
-                        setState(() {
-                          _isExpanded = !isExpanded;
-                        });
+                  ),
+                  onChanged: (value) {
+                    setState(
+                      () {
+                        _amount = double.tryParse(value) ?? 0.0;
                       },
-                    )
+                    );
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  style: const TextStyle(color: Colors.white),
+                  controller: _controllerpro,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: 'Enter Profit',
+                    labelStyle: TextStyle(
+                      color: Color.fromARGB(255, 255, 197, 49),
+                    ),
+                  ),
+                  onChanged: (value) {
+                    setState(
+                      () {
+                        _profit = double.tryParse(value) ?? 0.0;
+                      },
+                    );
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      // style: ElevatedButton.styleFrom(
+                      //   backgroundColor: Color.fromARGB(255, 9, 47, 104),
+                      // ),
+                      onPressed: () => _calculateGst(5),
+                      child: const Text('5%'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => _calculateGst(18),
+                      child: const Text('18%'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => _calculateGst(28),
+                      child: const Text('28%'),
+                    ),
                   ],
                 ),
-              ),
-              if(_isExpanded)
+                const SizedBox(
+                  height: 5,
+                ),
                 Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('SGST'),
-                  Text('₹ ${_sgst.toStringAsFixed(2)}'),
-                ],
-              ),
-              if(_isExpanded)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('CGST'),
-                  Text('₹ ${_cgst.toStringAsFixed(2)}'),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Profit'),
-                  Text('₹ ${_profit.toStringAsFixed(2)}'),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Profit added'),
-                  Text('₹ ${_profitupd.toStringAsFixed(2)}'),
-                ],
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Total',
-                    style: TextStyle(fontSize: 30),
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      // style: ElevatedButton.styleFrom(
+                      //   backgroundColor: Color.fromARGB(255, 9, 47, 104),
+                      // ),
+                      onPressed: () => _calculateSubGst(5),
+                      child: const Text('-5%'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => _calculateSubGst(18),
+                      child: const Text('-18%'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => _calculateSubGst(28),
+                      child: const Text('-28%'),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () => _addProfit(_profit, _gstRate),
+                      child: const Text('Add Profit'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        _clear();
+                        _controlleramt.clear();
+                        _controllerpro.clear();
+                      },
+                      child: const Text('Clear'),
+                    ),
+                  ],
+                ),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: const Text('GST'),
+                      ),
+                      ExpandIcon(
+                        isExpanded: _isExpanded,
+                        color: Colors.white,
+                        expandedColor: Colors.black,
+                        onPressed: (bool isExpanded) {
+                          setState(() {
+                            _isExpanded = !isExpanded;
+                          });
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0,0,0,0),
+                        child: Text('₹ ${_gst.toStringAsFixed(2)}'),
+                      ),
+                      
+                    ],
                   ),
-                  Text(
-                    '₹ ${_total.toStringAsFixed(2)}',
-                    style: const TextStyle(fontSize: 30),
-                  ),
-                ],
-              ),
-            ],
+                ),
+                if(_isExpanded)
+                  Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('SGST'),
+                    Text('₹ ${_sgst.toStringAsFixed(2)}'),
+                  ],
+                ),
+                if(_isExpanded)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('CGST'),
+                    Text('₹ ${_cgst.toStringAsFixed(2)}'),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Profit'),
+                    Text('₹ ${_profit.toStringAsFixed(2)}'),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Profit added'),
+                    Text('₹ ${_profitupd.toStringAsFixed(2)}'),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Total',
+                      style: TextStyle(fontSize: 30),
+                    ),
+                    Text(
+                      '₹ ${_total.toStringAsFixed(2)}',
+                      style: const TextStyle(fontSize: 30),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
