@@ -291,6 +291,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'GST Calculator',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
           scaffoldBackgroundColor: const Color.fromARGB(244, 3, 41, 71),
           primarySwatch: Colors.amber,
