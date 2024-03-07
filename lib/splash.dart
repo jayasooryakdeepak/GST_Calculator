@@ -1,9 +1,5 @@
-import 'dart:ffi';
-
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:gst_calculator/main.dart';
 import 'package:page_transition/page_transition.dart';
 
