@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:gst_calculator/splash.dart';
 
-class GstCalculator extends StatefulWidget {
-  const GstCalculator({super.key});
+class gstCalculator extends StatefulWidget {
+  const gstCalculator({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _GstCalculatorState createState() => _GstCalculatorState();
+  gstCalculatorState createState() => gstCalculatorState();
 }
 
-class _GstCalculatorState extends State<GstCalculator> {
+class gstCalculatorState extends State<gstCalculator> {
   double _amount = 0.0;
   double _gstRate = 0.0;
   double _cgst = 0.0;
@@ -301,7 +302,7 @@ class MyApp extends StatelessWidget {
             bodyColor: const Color.fromARGB(255, 255, 255, 255),
             displayColor: Colors.green,
           )),
-      home: GstCalculator(),
+      home: ScreenSplash(),
     );
   }
 }
